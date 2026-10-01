@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ArrowUpRight,
   BookOpen,
@@ -25,6 +25,29 @@ export default function App() {
   const contactEmail = 'omobolajiabdulsalam56@gmail.com';
   const whatsappNumberDisplay = '07032344281';
   const whatsappLink = 'https://wa.me/2347032344281';
+
+  useEffect(() => {
+    const currentUrl = window.location.origin + window.location.pathname;
+    let canonicalLink = document.querySelector(
+      'link[rel="canonical"]'
+    ) as HTMLLinkElement | null;
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.href = currentUrl;
+
+    let ogUrlMeta = document.querySelector(
+      'meta[property="og:url"]'
+    ) as HTMLMetaElement | null;
+    if (!ogUrlMeta) {
+      ogUrlMeta = document.createElement('meta');
+      ogUrlMeta.setAttribute('property', 'og:url');
+      document.head.appendChild(ogUrlMeta);
+    }
+    ogUrlMeta.content = currentUrl;
+  }, []);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(contactEmail);
